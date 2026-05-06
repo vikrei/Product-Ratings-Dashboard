@@ -27,6 +27,62 @@ async function getProducts() {
 
 console.log(categories);
 
+const averageRatings = [];
+
+for (const category in categories) {
+
+    const ratings = categories[category];
+
+    const total = ratings.reduce((sum, rating) => sum + rating, 0);
+
+    const average = total / ratings.length;
+
+    averageRatings.push({
+        name: category,
+        y: Number(average.toFixed(2))
+    });
+
+}
+
+console.log(averageRatings);
+Highcharts.chart("category-chart", {
+
+    chart: {
+        type: "column"
+    },
+
+    title: {
+        text: "Average Rating by Category"
+    },
+
+    accessibility: {
+        enabled: true
+    },
+
+    xAxis: {
+        type: "category",
+        title: {
+            text: "Categories"
+        }
+    },
+
+    yAxis: {
+        title: {
+            text: "Average Rating"
+        }
+    },
+
+    tooltip: {
+        pointFormat: "Average rating: <b>{point.y}</b>"
+    },
+
+    series: [{
+        name: "Rating",
+        data: averageRatings
+    }]
+
+});
+
     } catch(error) {
 
         console.log(error);
