@@ -5,6 +5,11 @@ async function getProducts() {
 
         status.textContent = "Loading product data...";
         const response = await fetch("https://fakestoreapi.com/products");
+        
+        if (!response.ok) {
+        throw new Error("Failed to fetch products");
+        }
+
         const products = await response.json();
         console.log(products);
         status.textContent = "Products loaded successfully!";
@@ -83,7 +88,7 @@ Highcharts.chart("category-chart", {
 
 });
 
-const topProducts = products
+const topProducts = [...products]
     .sort((a, b) => b.rating.rate - a.rating.rate)
     .slice(0, 5);
 
@@ -99,15 +104,28 @@ const productData = topProducts.map(product => {
 Highcharts.chart("products-chart", {
 
     chart: {
-        type: "pie"
+        type: "bar"
     },
 
     title: {
-        text: "Top Rated Products"
+        text: "Top 5 Highest Rated Products"
     },
 
     accessibility: {
         enabled: true
+    },
+
+    xAxis: {
+    type: "category",
+    title: {
+        text: "Products"
+        }
+    },
+
+    yAxis: {
+        title: {
+           text: "Rating"
+        }
     },
 
     tooltip: {
