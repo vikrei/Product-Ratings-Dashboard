@@ -83,6 +83,44 @@ Highcharts.chart("category-chart", {
 
 });
 
+const topProducts = products
+    .sort((a, b) => b.rating.rate - a.rating.rate)
+    .slice(0, 5);
+
+const productData = topProducts.map(product => {
+
+    return {
+        name: product.title,
+        y: product.rating.rate
+    };
+
+});
+
+Highcharts.chart("products-chart", {
+
+    chart: {
+        type: "pie"
+    },
+
+    title: {
+        text: "Top Rated Products"
+    },
+
+    accessibility: {
+        enabled: true
+    },
+
+    tooltip: {
+        pointFormat: "Rating: <b>{point.y}</b>"
+    },
+
+    series: [{
+        name: "Rating",
+        data: productData
+    }]
+
+});
+
     } catch(error) {
 
         console.log(error);
